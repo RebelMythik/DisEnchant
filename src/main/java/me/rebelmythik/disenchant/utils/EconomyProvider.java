@@ -10,54 +10,49 @@ public class EconomyProvider {
         String currencyname = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
 
-        switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
-            case "VAULT" :
+        switch (plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+            case "VAULT":
+                return (long) plugin.eco.getBalance(player);
 
+            case "EXP":
+                return (long) ExperienceGetter.getExp(player);
 
+            case "PECONOMY":
                 break;
-            case "EXP" :
-
-
-                break;
-            case "PECONOMY" :
-
         }
         return 0;
     }
 
-    public static void removeBalance(DisEnchant plugin) {
+    public static void removeBalance(DisEnchant plugin, Player player, long cost) {
         String currencyname = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
-        if (currencyname == "Vault") {
+            switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+                case "VAULT" :
+                    plugin.eco.withdrawPlayer(player, cost);
 
-        }
-        // EXP
-        if (currencyname == "XP") {
+                    break;
+                case "EXP" :
+                    ExperienceGetter.changeExp(player, (int)(-cost));
 
-
-            // PEconomy
-        }
-        if (currencyname == "PEconomy") {
-
-        }
+                    break;
+                case "PECONOMY" :
+                    break;
+            }
     }
 
     public static boolean hasBalance(DisEnchant plugin, Player player) {
-        String currencyName = plugin.getConfig().getString("EconomyProvider");
+        String currencyname = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
-        if (currencyName == "Vault") {
-            if (!hasEconomy(plugin)) return false;
-            return plugin.eco.hasAccount(player);
-        }
+        switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+            case "VAULT" :
+                if (!hasEconomy(plugin)) return false;
+                return plugin.eco.hasAccount(player);
 
-        // EXP
-        if (currencyName == "XP") {
-            return true;
+            case "EXP" :
+                return true;
 
-        // PEconomy
-        }
-        if (currencyName == "PEconomy") {
-            return false;
+            case "PECONOMY" :
+                return false;
         }
 
         return false;
@@ -65,13 +60,11 @@ public class EconomyProvider {
     public static boolean canPurchase(DisEnchant plugin, Player player, long cost) {
         if (!hasBalance(plugin, player)) return false;
 
-        if (getBalance(plugin) < cost) return false;
+        if (getBalance(plugin, player) < cost) return false;
 
         return true;
 
     }
-
-
 
     public static boolean hasEconomy(DisEnchant plugin) {
         if (plugin.eco == null) {

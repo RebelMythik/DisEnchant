@@ -10,8 +10,12 @@ public final class DisEnchant extends JavaPlugin {
     public Economy eco = null;
 
     public boolean hasEconomy() {
-        RegisteredServiceProvider<Economy> economy = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economy != null) return true;
+        try {
+            RegisteredServiceProvider<Economy> economy = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+            if (economy != null) return true;
+        } catch(Exception e) {
+            return false;
+        }
         return false;
     }
 

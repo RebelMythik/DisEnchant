@@ -5,6 +5,7 @@ import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
 import me.rebelmythik.disenchant.DisEnchant;
+import me.rebelmythik.disenchant.utils.EconomyProvider;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -17,7 +18,6 @@ import java.util.Map;
 public class DisEnchantGUI {
 
     public static void DisEnchantmentGUI(DisEnchant plugin, Player pl, Map<Enchantment, Integer> enchs) {
-        Player player = pl;
         Enchantment[] enchantmentArray = enchs.keySet().toArray(new Enchantment[enchs.size()]);
         List<String> guiConfig = plugin.getConfig().getStringList("GUI");
         String[] guiSetup = new String[guiConfig.size()];
@@ -38,11 +38,16 @@ public class DisEnchantGUI {
         GuiElementGroup enchantList = new GuiElementGroup('g');
         for (int i = 0; i < enchantmentArray.length; i++) {
             final int j = i;
-            ItemStack it = new ItemStack(player.getInventory().getItemInMainHand().getType());
+            ItemStack it = new ItemStack(pl.getInventory().getItemInMainHand().getType());
             plugin.getLogger().info(enchantmentArray[j].getName());
             it.addUnsafeEnchantment(enchantmentArray[i], enchs.get(enchantmentArray[i]));
             enchantList.addElement(new DynamicGuiElement('g', (viewer) -> new StaticGuiElement('g', it, click -> {
                 //check for currency
+                if (EconomyProvider.canPurchase(plugin, pl, plugin.getConfig().getInt("CostToRemove"))) {
+                    //take da money
+                    EconomyProvider.removeBalance(plugin, pl, plugin.getConfig().getInt("CostToRemove"));
+                    //remove enchantment
+                    int slot = click.getSlot();
 
                     pl.getInventory().getItemInMainHand().removeEnchantment(enchantmentArray[j]);
                     click.getGui().setElement(slot, new StaticGuiElement('g', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + " Successfully Removed", "&c", "E", "e"));
