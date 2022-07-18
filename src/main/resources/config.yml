@@ -1,11 +1,13 @@
 EconomyProvider: 'Vault'
 
-EconomyCosts:
-  Vault: 100
-  XP: 100
-  PEconomy: 100
+CostToRemove: 100
 
-
+GUI:
+  - 'FFFF1FFFF'
+  - 'ggggggggg'
+  - 'ggggggggg'
+  - 'ggggggggg'
+  - 'FFFFFFFFF'
 
 messages:
   NotEnoughXP: 'You do not have enough XP to disenchant this'

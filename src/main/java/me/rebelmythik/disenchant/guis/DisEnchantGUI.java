@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,13 @@ public class DisEnchantGUI {
     public static void DisEnchantmentGUI(DisEnchant plugin, Player pl, Map<Enchantment, Integer> enchs) {
         Player player = pl;
         Enchantment[] enchantmentArray = enchs.keySet().toArray(new Enchantment[enchs.size()]);
-
-        String[] guiSetup = {
-                "FFFF1FFFF",
-                "ggggggggg",
-                "ggggggggg",
-                "ggggggggg",
-                "FFFFFFFFF"
-        };
+        List<String> guiConfig = plugin.getConfig().getStringList("GUI");
+        String[] guiSetup = new String[guiConfig.size()];
+        int c = 0;
+        for (String str : guiConfig) {
+            guiSetup[c] = str;
+            c++;
+        }
 
         InventoryGui gui = new InventoryGui(plugin, null, "DisEnchant Menu", guiSetup);
 
@@ -46,25 +44,12 @@ public class DisEnchantGUI {
             enchantList.addElement(new DynamicGuiElement('g', (viewer) -> new StaticGuiElement('g', it, click -> {
                 //check for currency
 
-                if (player.getExp() >= plugin.getConfig().getInt("XPCost")) {
-                    //subtract currency
-                    int slot = click.getSlot();
-                    int cost = plugin.getConfig().getInt("XPCost");
-                    float xphas = player.getExp();
-
                     pl.getInventory().getItemInMainHand().removeEnchantment(enchantmentArray[j]);
-                    click.getGui().removeElement(slot);
-                    player.setExp(xphas - cost);
                     click.getGui().setElement(slot, new StaticGuiElement('g', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + " Successfully Removed", "&c", "E", "e"));
-
-                //poor
+                    gui.draw();
                 } else {
-                    //bully them for being poor
-                    int cost = plugin.getConfig().getInt("XPCost");
-                    float xphas = player.getExp();
-                    player.sendMessage(plugin.getConfig().getString("messages.NotEnoughXP"));
-                    plugin.getLogger().info("You need: " + cost);
-                    plugin.getLogger().info("You have: " + xphas);
+                    //they don't have enough so bully them for being poor
+                    pl.sendMessage(plugin.getConfig().getString("messages.NotEnoughXP"));
                 }
                 return true;
             }, enchantmentArray[j].getName())));

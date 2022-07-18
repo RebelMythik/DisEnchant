@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 public class EconomyProvider {
 
 
-    public static long getBalance(DisEnchant plugin) {
-        String currencyname = plugin.getConfig().getString("EconomyProvider")
+    public static long getBalance(DisEnchant plugin, Player player) {
+        String currencyname = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
 
         switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
@@ -20,18 +20,6 @@ public class EconomyProvider {
 
                 break;
             case "PECONOMY" :
-
-        }
-        if (currencyname == "Vault") {
-
-        }
-        // EXP
-        if (currencyname == "XP") {
-
-
-        // PEconomy
-        }
-        if (currencyname == "PEconomy") {
 
         }
         return 0;
