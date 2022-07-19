@@ -2,6 +2,9 @@ EconomyProvider: 'Vault'
 
 CostToRemove: 100
 
+# If you are using PEconomy please specify which wallet you would like to use
+WalletName: "tokens"
+
 GUI:
   - 'FFFF1FFFF'
   - 'ggggggggg'

@@ -57,7 +57,7 @@ public class DisEnchantGUI {
                     pl.sendMessage(plugin.getConfig().getString("messages.NotEnoughXP"));
                 }
                 return true;
-            }, enchantmentArray[j].getName())));
+            }, enchantmentArray[j].getName() + "&c ", "&aCost To Remove", "100 XP")));
 
         }
         gui.addElement(enchantList);

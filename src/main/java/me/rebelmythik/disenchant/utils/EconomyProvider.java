@@ -2,12 +2,14 @@ package me.rebelmythik.disenchant.utils;
 
 import me.rebelmythik.disenchant.DisEnchant;
 import org.bukkit.entity.Player;
+import ru.soknight.peconomy.api.PEconomyAPI;
+import ru.soknight.peconomy.database.model.WalletModel;
 
 public class EconomyProvider {
 
-
     public static long getBalance(DisEnchant plugin, Player player) {
-        String currencyname = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = plugin.getConfig().getString("EconomyProvider");
+        PEconomyAPI api = PEconomyAPI.get();
         // Vault Economy
 
         switch (plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
@@ -18,13 +20,19 @@ public class EconomyProvider {
                 return (long) ExperienceGetter.getExp(player);
 
             case "PECONOMY":
-                break;
+                WalletModel wallet = api.getWallet("SoKnight");
+                if(wallet == null) {
+                    System.err.println("SoKnight has no wallet!");
+                }
+
+
+                return (float) api.getAmount(plugin.getConfig().getString("WalletName"));
         }
         return 0;
     }
 
     public static void removeBalance(DisEnchant plugin, Player player, long cost) {
-        String currencyname = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
             switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
                 case "VAULT" :
@@ -41,7 +49,7 @@ public class EconomyProvider {
     }
 
     public static boolean hasBalance(DisEnchant plugin, Player player) {
-        String currencyname = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = plugin.getConfig().getString("EconomyProvider");
         // Vault Economy
         switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
             case "VAULT" :
