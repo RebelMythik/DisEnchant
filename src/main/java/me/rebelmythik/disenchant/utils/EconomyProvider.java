@@ -5,36 +5,36 @@ import org.bukkit.entity.Player;
 import ru.soknight.peconomy.api.PEconomyAPI;
 import ru.soknight.peconomy.database.model.WalletModel;
 
+import java.util.Objects;
+
 public class EconomyProvider {
 
     public static long getBalance(DisEnchant plugin, Player player) {
-        String currencyName = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = Objects.requireNonNull(plugin.getConfig().getString("EconomyProvider")).toUpperCase();
         PEconomyAPI api = PEconomyAPI.get();
         // Vault Economy
 
-        switch (plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+        switch (currencyName) {
             case "VAULT":
                 return (long) plugin.eco.getBalance(player);
 
             case "EXP":
-                return (long) ExperienceGetter.getExp(player);
+                return ExperienceGetter.getExp(player);
 
             case "PECONOMY":
-                WalletModel wallet = api.getWallet("SoKnight");
-                if(wallet == null) {
-                    System.err.println("SoKnight has no wallet!");
-                }
-
-
-                return (float) api.getAmount(plugin.getConfig().getString("WalletName"));
+                String playerName = player.getName();
+                WalletModel wallet = api.getWallet(playerName);
+                float balance = wallet.getAmount(Objects.requireNonNull(plugin.getConfig().getString("WalletName")));
+                return (long) balance;
         }
         return 0;
     }
 
     public static void removeBalance(DisEnchant plugin, Player player, long cost) {
-        String currencyName = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = Objects.requireNonNull(plugin.getConfig().getString("EconomyProvider")).toUpperCase();
+
         // Vault Economy
-            switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+            switch(currencyName) {
                 case "VAULT" :
                     plugin.eco.withdrawPlayer(player, cost);
 
@@ -49,9 +49,10 @@ public class EconomyProvider {
     }
 
     public static boolean hasBalance(DisEnchant plugin, Player player) {
-        String currencyName = plugin.getConfig().getString("EconomyProvider");
+        String currencyName = Objects.requireNonNull(plugin.getConfig().getString("EconomyProvider")).toUpperCase();
+
         // Vault Economy
-        switch(plugin.getConfig().getString("EconomyProvider").toUpperCase()) {
+        switch(currencyName) {
             case "VAULT" :
                 if (!hasEconomy(plugin)) return false;
                 return plugin.eco.hasAccount(player);
@@ -68,16 +69,11 @@ public class EconomyProvider {
     public static boolean canPurchase(DisEnchant plugin, Player player, long cost) {
         if (!hasBalance(plugin, player)) return false;
 
-        if (getBalance(plugin, player) < cost) return false;
-
-        return true;
+        return getBalance(plugin, player) >= cost;
 
     }
 
     public static boolean hasEconomy(DisEnchant plugin) {
-        if (plugin.eco == null) {
-            return false;
-        }
-        return true;
+        return plugin.eco != null;
     }
 }
