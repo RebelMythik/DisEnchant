@@ -44,6 +44,10 @@ public class EconomyProvider {
 
                     break;
                 case "PECONOMY" :
+                    PEconomyAPI api = PEconomyAPI.get();
+                    WalletModel wallet = api.getWallet(player.getName());
+                    wallet.takeAmount(plugin.getConfig().getString("WalletName"), plugin.getConfig().getInt("CostToRemove"));
+                    api.updateWallet(wallet);
                     break;
             }
     }
@@ -61,7 +65,11 @@ public class EconomyProvider {
                 return true;
 
             case "PECONOMY" :
-                return false;
+                String playerName = player.getName();
+                PEconomyAPI api = PEconomyAPI.get();
+                WalletModel wallet = api.getWallet(playerName);
+                return wallet != null;
+
         }
 
         return false;
