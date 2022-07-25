@@ -22,15 +22,18 @@ public final class DisEnchant extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getCommand("disenchant").setExecutor(new disEnchantCommand(this));
-        if (hasEconomy()) {
-            //get right economy (hopefully)
-            RegisteredServiceProvider<Economy> economy = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-            eco = economy.getProvider();
-            getLogger().info("Economy found");
-        }
-        saveDefaultConfig();
 
+        getCommand("disenchant").setExecutor(new disEnchantCommand(this));
+        saveDefaultConfig();
+        if (!getConfig().getString("EconomyProvider").equalsIgnoreCase("Vault")) {
+            return;
+        } else {
+            if (hasEconomy()) {
+                //get right economy (hopefully)
+                RegisteredServiceProvider<Economy> economy = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+                eco = economy.getProvider();
+            }
+        }
     }
 
     @Override

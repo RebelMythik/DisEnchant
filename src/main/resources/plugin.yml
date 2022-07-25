@@ -2,6 +2,7 @@ name: DisEnchant
 version: '${project.version}'
 main: me.rebelmythik.disenchant.DisEnchant
 api-version: 1.18
+softDepends: [ Vault, PEconomy]
 
 commands:
   disenchant:

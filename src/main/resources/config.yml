@@ -1,16 +1,37 @@
-EconomyProvider: 'Vault'
+# The list below is what you can use to charge for the removal
+# EXP (Experience), Vault, and PEconomy
+EconomyProvider: 'EXP'
 
+# 100 is around the first 7 levels of minecraft experience.
 CostToRemove: 100
 
 # If you are using PEconomy please specify which wallet you would like to use
 WalletName: "tokens"
 
+# Please Don't Leave any space blank or it will show the
+# item that replaces enchants when removed.
+# F is for the filler item
 GUI:
-  - 'FFFF1FFFF'
-  - 'ggggggggg'
-  - 'ggggggggg'
-  - 'ggggggggg'
+  - 'FFFFBFFFF'
+  - 'SSSSSSSSS'
+  - 'SSSSSSSSS'
+  - 'SSSSSSSSS'
   - 'FFFFFFFFF'
+
+ItemConfiguration:
+  S:
+    lore:
+      - 'Cost: 100'
+      - '&7'
+      - '&7Left clicking will remove this enchant'
+      - '&7and can''t be undone'
+  B:
+    display_name: '&6DisEnchant'
+    lore:
+      - '&7Click on what enchant you would like'
+      - '&7to remove from your tool! This will'
+      - '&7permanently remove the enchant and can''t be undone'
+
 
 messages:
   NotEnoughXP: 'You do not have enough XP to disenchant this'

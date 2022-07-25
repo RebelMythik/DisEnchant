@@ -30,17 +30,16 @@ public class DisEnchantGUI {
 
         ItemStack stack = new ItemStack(Material.RED_CONCRETE);
         gui.setFiller(stack);
-        gui.addElement('1', new ItemStack(Material.BOOK), click -> true);
+        gui.addElement(new StaticGuiElement('B', new ItemStack(Material.BOOK), 1, click -> {return true;}, plugin.getConfig().getString("B.display_name") + plugin.getConfig().getStringList("B.lore")));
         gui.addElement('F', new ItemStack(Material.GRAY_STAINED_GLASS_PANE), click -> true);
 
-
-        GuiElementGroup enchantList = new GuiElementGroup('g');
+        GuiElementGroup enchantList = new GuiElementGroup('S');
         for (int i = 0; i < enchantmentArray.length; i++) {
             final int j = i;
             ItemStack it = new ItemStack(pl.getInventory().getItemInMainHand().getType());
             plugin.getLogger().info(enchantmentArray[j].getName());
             it.addUnsafeEnchantment(enchantmentArray[i], enchs.get(enchantmentArray[i]));
-            enchantList.addElement(new DynamicGuiElement('g', (viewer) -> new StaticGuiElement('g', it, click -> {
+            enchantList.addElement(new DynamicGuiElement('S', (viewer) -> new StaticGuiElement('S', it, click -> {
                 //check for currency
                 if (EconomyProvider.canPurchase(plugin, pl, plugin.getConfig().getInt("CostToRemove"))) {
                     //take da money
@@ -49,14 +48,14 @@ public class DisEnchantGUI {
                     int slot = click.getSlot();
 
                     pl.getInventory().getItemInMainHand().removeEnchantment(enchantmentArray[j]);
-                    click.getGui().setElement(slot, new StaticGuiElement('g', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + " Successfully Removed", "&c", "E", "e"));
+                    click.getGui().setElement(slot, new StaticGuiElement('S', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + plugin.getConfig().getStringList("S.lore")));
                     gui.draw();
                 } else {
                     //they don't have enough so bully them for being poor
                     pl.sendMessage(plugin.getConfig().getString("messages.NotEnoughXP"));
                 }
                 return true;
-            }, enchantmentArray[j].getName() + "&c ", "&aCost To Remove", "100 XP")));
+            }, enchantmentArray[j].getName() + plugin.getConfig().getStringList("S.lore"))));
 
         }
         gui.addElement(enchantList);
