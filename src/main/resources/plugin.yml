@@ -7,3 +7,5 @@ softDepends: [ Vault, PEconomy]
 commands:
   disenchant:
     description: disenchants
+permissions:
+  disenchant.reload:

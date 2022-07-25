@@ -30,7 +30,12 @@ public class DisEnchantGUI {
 
         ItemStack stack = new ItemStack(Material.RED_CONCRETE);
         gui.setFiller(stack);
-        gui.addElement(new StaticGuiElement('B', new ItemStack(Material.BOOK), 1, click -> {return true;}, plugin.getConfig().getString("B.display_name") + plugin.getConfig().getStringList("B.lore")));
+        List<String> bookLore = plugin.getConfig().getStringList("ItemConfiguration.B.lore");
+        bookLore.add(0, plugin.getConfig().getString("ItemConfiguration.B.display_name"));
+        String[] lore = new String[bookLore.size()];
+        lore = bookLore.toArray(lore);
+
+        gui.addElement(new StaticGuiElement('B', new ItemStack(Material.BOOK), 1, (GuiElement.Action) click -> {return true;}, lore));
         gui.addElement('F', new ItemStack(Material.GRAY_STAINED_GLASS_PANE), click -> true);
 
         GuiElementGroup enchantList = new GuiElementGroup('S');
@@ -48,14 +53,14 @@ public class DisEnchantGUI {
                     int slot = click.getSlot();
 
                     pl.getInventory().getItemInMainHand().removeEnchantment(enchantmentArray[j]);
-                    click.getGui().setElement(slot, new StaticGuiElement('S', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + plugin.getConfig().getStringList("S.lore")));
+                    click.getGui().setElement(slot, new StaticGuiElement('S', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + plugin.getConfig().getStringList("ItemConfiguration.S.lore")));
                     gui.draw();
                 } else {
                     //they don't have enough so bully them for being poor
-                    pl.sendMessage(plugin.getConfig().getString("messages.NotEnoughXP"));
+                    pl.sendMessage(plugin.getConfig().getString("messages.NotEnough"));
                 }
                 return true;
-            }, enchantmentArray[j].getName() + plugin.getConfig().getStringList("S.lore"))));
+            }, finalItLore)));
 
         }
         gui.addElement(enchantList);

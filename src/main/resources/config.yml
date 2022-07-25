@@ -21,7 +21,7 @@ GUI:
 ItemConfiguration:
   S:
     lore:
-      - 'Cost: 100'
+      - '&7Cost: 100'
       - '&7'
       - '&7Left clicking will remove this enchant'
       - '&7and can''t be undone'
@@ -34,4 +34,5 @@ ItemConfiguration:
 
 
 messages:
-  NotEnoughXP: 'You do not have enough XP to disenchant this'
+  NotEnough: 'You do not have enough XP to disenchant this'
+  NoPermission: 'You do not have permission to use this command'
