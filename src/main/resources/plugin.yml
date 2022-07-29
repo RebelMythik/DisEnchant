@@ -6,6 +6,9 @@ softDepends: [ Vault, PEconomy]
 
 commands:
   disenchant:
-    description: disenchants
+    description: 'Disenchants'
 permissions:
   disenchant.reload:
+    description: 'Lets you reload plugin'
+  disenchant.use:
+    description: 'Lets player use disenchant menu'
