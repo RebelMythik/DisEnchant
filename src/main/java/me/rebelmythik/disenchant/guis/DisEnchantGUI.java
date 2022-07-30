@@ -2,6 +2,7 @@ package me.rebelmythik.disenchant.guis;
 
 import de.themoep.inventorygui.*;
 import me.rebelmythik.disenchant.DisEnchant;
+import me.rebelmythik.disenchant.utils.ColorCode;
 import me.rebelmythik.disenchant.utils.EconomyProvider;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DisEnchantGUI {
-
 
     public static void DisEnchantmentGUI(DisEnchant plugin, Player pl, Map<Enchantment, Integer> enchs) {
         Enchantment[] enchantmentArray = enchs.keySet().toArray(new Enchantment[enchs.size()]);
@@ -41,12 +41,13 @@ public class DisEnchantGUI {
         for (int i = 0; i < enchantmentArray.length; i++) {
             final int j = i;
             ItemStack it = new ItemStack(pl.getInventory().getItemInMainHand().getType());
-            plugin.getLogger().info(enchantmentArray[j].getName());
             it.addUnsafeEnchantment(enchantmentArray[i], enchs.get(enchantmentArray[i]));
             List<String> itemLore = plugin.getConfig().getStringList("ItemConfiguration.S.lore");
             itemLore.add(0, enchantmentArray[j].getName());
             String[] itLore = new String[itemLore.size()];
             itLore = itemLore.toArray(itLore);
+            ColorCode colorCodes = new ColorCode();
+
 
             String[] finalItLore = itLore;
             enchantList.addElement(new DynamicGuiElement('S', (viewer) -> new StaticGuiElement('S', it, click -> {
@@ -58,11 +59,11 @@ public class DisEnchantGUI {
                     int slot = click.getSlot();
 
                     pl.getInventory().getItemInMainHand().removeEnchantment(enchantmentArray[j]);
-                    click.getGui().setElement(slot, new StaticGuiElement('S', stack, 1, click1 -> {return true;}, enchantmentArray[j].getName() + plugin.getConfig().getStringList("ItemConfiguration.S.lore")));
+                    click.getGui().setElement(slot, new StaticGuiElement('S', stack, 1, click1 -> {return true;}, "&cEnchantment Removed"));
                     gui.draw();
                 } else {
                     //they don't have enough so bully them for being poor
-                    pl.sendMessage(plugin.getConfig().getString("messages.NotEnough"));
+                    pl.sendMessage(colorCodes.cm(plugin.getConfig().getString("messages.NotEnough")));
                 }
                 return true;
             }, finalItLore)));

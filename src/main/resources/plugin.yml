@@ -7,6 +7,8 @@ softDepends: [ Vault, PEconomy]
 commands:
   disenchant:
     description: 'Disenchants'
+  disnechantreload:
+    description: 'reloads plugin'
 permissions:
   disenchant.reload:
     description: 'Lets you reload plugin'

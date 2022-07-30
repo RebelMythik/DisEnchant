@@ -11,7 +11,6 @@ public class EconomyProvider {
 
     public static long getBalance(DisEnchant plugin, Player player) {
         String currencyName = Objects.requireNonNull(plugin.getConfig().getString("EconomyProvider")).toUpperCase();
-        PEconomyAPI api = PEconomyAPI.get();
         // Vault Economy
 
         switch (currencyName) {
@@ -22,6 +21,7 @@ public class EconomyProvider {
                 return ExperienceGetter.getExp(player);
 
             case "PECONOMY":
+                PEconomyAPI api = PEconomyAPI.get();
                 String playerName = player.getName();
                 WalletModel wallet = api.getWallet(playerName);
                 float balance = wallet.getAmount(Objects.requireNonNull(plugin.getConfig().getString("WalletName")));

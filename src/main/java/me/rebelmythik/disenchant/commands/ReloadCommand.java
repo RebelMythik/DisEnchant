@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 public class ReloadCommand implements CommandExecutor {
 
     DisEnchant plugin;
-    ColorCode colorcodes = new ColorCode();
+    ColorCode colorCodes = new ColorCode();
 
     public ReloadCommand(DisEnchant  plugin) {
         this.plugin = plugin;
@@ -17,10 +17,10 @@ public class ReloadCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("disenchantreload")) {
             if(!sender.hasPermission("disenchant.reload")) {
-                sender.sendMessage(colorcodes.cm(plugin.getConfig().getString("messages.no-permission")));
+                sender.sendMessage(colorCodes.cm(plugin.getConfig().getString("messages.no-permission")));
                 return true;
             }
-            sender.sendMessage(colorcodes.cm(plugin.getConfig().getString("messages.reload-message")));
+            sender.sendMessage(colorCodes.cm(plugin.getConfig().getString("messages.reload-message")));
             plugin.reloadConfig();
         }
         return false;
